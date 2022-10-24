@@ -1,0 +1,80 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  fullName: String!
+  email: String!
+  roles: [String!]!
+  isActive: Boolean!
+  lastUpdateBy: User
+  items: [Item!]!
+}
+
+type Item {
+  id: ID!
+  name: String!
+  quantityUnits: String
+  user: User!
+}
+
+type AuthResponseType {
+  token: String!
+  user: User!
+}
+
+type Query {
+  items: [Item!]!
+  item(id: ID!): Item!
+  users(roles: [ValidRoles!] = []): [User!]!
+  user(id: ID!): User!
+  revalidate: AuthResponseType!
+}
+
+enum ValidRoles {
+  admin
+  user
+  superUser
+}
+
+type Mutation {
+  createItem(createItemInput: CreateItemInput!): Item!
+  updateItem(updateItemInput: UpdateItemInput!): Item!
+  removeItem(id: ID!): Item!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  blockUser(id: ID!): User!
+  signIn(signInInput: SignInInput!): AuthResponseType!
+  signUp(signUpInput: SignUpInput!): AuthResponseType!
+}
+
+input CreateItemInput {
+  name: String!
+  quantityUnits: String
+}
+
+input UpdateItemInput {
+  name: String
+  quantityUnits: String
+  id: ID!
+}
+
+input UpdateUserInput {
+  fullName: String
+  email: String
+  password: String
+  id: ID!
+  roles: [ValidRoles!]
+  isActive: Boolean
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+input SignUpInput {
+  fullName: String!
+  email: String!
+  password: String!
+}
