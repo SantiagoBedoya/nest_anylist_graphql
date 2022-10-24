@@ -29,3 +29,5 @@ npm run start:dev
 ```
 http://localhost:3000
 ```
+
+7. Execute __mutation__ ```executeSeed```, to load the seeders
