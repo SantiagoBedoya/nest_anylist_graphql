@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -53,7 +54,7 @@ export class UsersService {
   }
   async findOneByEmail(email: string) {
     const user = await this.userRepository.findOneBy({ email });
-    if (!user) throw new NotFoundException();
+    if (!user) throw new UnauthorizedException();
     return user;
   }
 
