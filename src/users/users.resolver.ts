@@ -16,6 +16,8 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { ValidRoles } from '../auth/enums/valid-roles.enum';
 import { ItemsService } from '../items/items.service';
+import { Item } from '../items/entities/item.entity';
+import { PaginationArg, SearchArg } from '../common/dto';
 
 @Resolver(() => User)
 @UseGuards(JwtAuthGuard)
@@ -63,5 +65,15 @@ export class UsersResolver {
     @CurrentUser([ValidRoles.admin]) adminUser: User,
   ): Promise<number> {
     return this.itemsService.itemCountByUser(user);
+  }
+
+  @ResolveField(() => [Item], { name: 'items' })
+  getItemsByUser(
+    @Parent() user: User,
+    @CurrentUser([ValidRoles.admin]) adminUser: User,
+    @Args() paginationArg: PaginationArg,
+    @Args() searchArg: SearchArg,
+  ): Promise<Item[]> {
+    return this.itemsService.findAll(user, paginationArg, searchArg);
   }
 }
