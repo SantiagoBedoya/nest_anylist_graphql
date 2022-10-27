@@ -24,6 +24,10 @@ import { ListItemModule } from './list-item/list-item.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
+        ssl:
+          configService.get<string>('STAGE').toLowerCase() === 'prod'
+            ? { rejectUnauthorized: false, sslmode: 'require' }
+            : false,
         host: configService.get('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get('DB_USERNAME'),
